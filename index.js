@@ -9,7 +9,20 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+const users = {};
+
 io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    socket.on('login', function(username){
+        users[socket.id] = username;
+        io.emit("user joined", username)
+    });
+
+    socket.on('disconnect', function(){
+        io.emit("user left", users[socket.id])
+        delete users[socket.id];
+    });
     socket.on('chat message', (user, msg) => {
         io.emit('chat message', user, msg);
     });

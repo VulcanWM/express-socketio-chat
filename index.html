@@ -24,6 +24,7 @@
     <script>
        var socket = io();
        var username = "User" + (Math.floor(Math.random()*90000) + 10000);
+       socket.emit('login',username);
 
         var messages = document.getElementById('messages');
         var form = document.getElementById('form');
@@ -40,6 +41,18 @@
         socket.on('chat message', function(user, msg) {
             var item = document.createElement('li');
             item.innerHTML = "<strong>" + user + "</strong>: " + msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        socket.on('user joined', function(username) {
+            var item = document.createElement('li');
+            item.innerHTML = "<strong>" + username + "</strong> has joined"
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        socket.on('user left', function(username) {
+            var item = document.createElement('li');
+            item.innerHTML = "<strong>" + username + "</strong> has left"
             messages.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
         });
