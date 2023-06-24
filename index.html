@@ -23,25 +23,26 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
        var socket = io();
+       var username = "User" + (Math.floor(Math.random()*90000) + 10000);
 
-var messages = document.getElementById('messages');
-var form = document.getElementById('form');
-var input = document.getElementById('input');
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
 
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (input.value) {
-    socket.emit('chat message', input.value);
-    input.value = '';
-  }
-});
+        form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+            socket.emit('chat message', username, input.value);
+            input.value = '';
+        }
+        });
 
-socket.on('chat message', function(msg) {
-  var item = document.createElement('li');
-  item.textContent = msg;
-  messages.appendChild(item);
-  window.scrollTo(0, document.body.scrollHeight);
-});
+        socket.on('chat message', function(user, msg) {
+            var item = document.createElement('li');
+            item.innerHTML = "<strong>" + user + "</strong>: " + msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
     </script>
   </body>
 </html>
