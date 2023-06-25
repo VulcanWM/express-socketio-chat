@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.ejs');
+  res.sendFile(__dirname + '/chat.ejs');
 });
 
 const users = {};
